@@ -1,8 +1,18 @@
 {
+  "name": "simple-vanilla",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "three": "^0.159.0"
+    "three": "^0.160.0"
   },
   "devDependencies": {
-    "vite": "^5.0.10"
+    "vite": "^5.0.11"
   }
 }
