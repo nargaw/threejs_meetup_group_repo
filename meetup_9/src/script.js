@@ -1,12 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import GUI from 'lil-gui'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
-import { MSDFTextGeometry, uniforms } from 'three-msdf-text-utils'
-import fnt from './Font/MSDF/roboto-regular.json'
-import png from './Font/MSDF/roboto-regular.png'
 
 /**
  * Base
@@ -21,7 +17,9 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 // Loaders
-const gltfLoader = new GLTFLoader()
+const loader = new THREE.TextureLoader()
+const image = loader.load('./Image/night.jpg')
+console.log(image)
 
 /**
  * Sizes
@@ -54,7 +52,7 @@ window.addEventListener('resize', () =>
 // Base camera
 const camera = new THREE.PerspectiveCamera(25, sizes.width / sizes.height, 0.1, 100)
 scene.add(camera)
-camera.position.set(0, 0, 27)
+camera.position.set(0, 0, 5)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
@@ -80,6 +78,11 @@ let mouseX
 let mouseY
 
 /**
+ * Geometry
+ */
+const geometry = new THREE.PlaneGeometry(1, 1)
+
+/**
  * Material
  */
 const materialParameters = {}
@@ -90,76 +93,29 @@ const material = new THREE.ShaderMaterial({
     fragmentShader: fragmentShader,
     uniforms:
     {
-         // Common
-         ...uniforms.common,
-        
-         // Rendering
-         ...uniforms.rendering,
-         
-         // Strokes
-         ...uniforms.strokes,
-         ...{
-             uStrokeColor: {value: new THREE.Color(0x0000ff)}
-         },
         uTime: new THREE.Uniform(0),
-        uMouse: new THREE.Uniform(new THREE.Vector2(mouseX, mouseY))
+        uMouse: new THREE.Uniform(new THREE.Vector2(mouseX, mouseY)),
+        uTexture: new THREE.Uniform(image)
     },
     side: THREE.DoubleSide,
     transparent: true,
-    defines: {
-        IS_SMALL: false,
-    },
-    extensions: {
-        derivatives: true,
-    },
 })
 
-gui
-    .addColor(materialParameters, 'color')
-    .onChange(() =>
-    {
-        material.uniforms.uColor.value.set(materialParameters.color)
-    })
-
-let boundingBox
-const meshSizes = {
-    width: 0,
-    height: 0,
-    leftPixel: 0,
-    rightPixel: 0,
-    topPixel: 0,
-    bottomPixel: 0
-}
+// const testMaterial = new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)})
 
 /**
- * MSDF Font
+ * Mesh
  */
-Promise.all([
-    loadFontAtlas(png),
-]).then(([atlas]) => {
-    const geometry = new MSDFTextGeometry({
-        text: "Three.js",
-        font: fnt,
-    });
-    
-    material.uniforms.uMap.value = atlas;
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
 
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh)
-    // console.log(mesh)
-    mesh.scale.set(0.1, -0.1, 0.1)
-    mesh.position.x = -15
-    mesh.position.z = -20
-});
+// gui
+//     .addColor(materialParameters, 'color')
+//     .onChange(() =>
+//     {
+//         material.uniforms.uColor.value.set(materialParameters.color)
+//     })
 
-function loadFontAtlas(path) {
-    const promise = new Promise((resolve, reject) => {
-        const loader = new THREE.TextureLoader();
-        loader.load(path, resolve);
-    });
-
-    return promise;
-}
 
 /**
  * SetMouse
