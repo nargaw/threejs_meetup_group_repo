@@ -80,7 +80,9 @@ let mouseY
 /**
  * Geometry
  */
-const geometry = new THREE.PlaneGeometry(1, 1)
+const meshSize = 2
+const geometry = new THREE.PlaneGeometry(meshSize, meshSize, 128, 128)
+
 
 /**
  * Material
@@ -101,31 +103,66 @@ const material = new THREE.ShaderMaterial({
     transparent: true,
 })
 
-// const testMaterial = new THREE.MeshBasicMaterial({color: new THREE.Color(0xff0000)})
-
 /**
  * Mesh
  */
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-// gui
-//     .addColor(materialParameters, 'color')
-//     .onChange(() =>
-//     {
-//         material.uniforms.uColor.value.set(materialParameters.color)
-//     })
+/**
+ * fixMouse
+ */
+const topLeft = new THREE.Vector3(
+    mesh.position.x - meshSize / 2,
+    mesh.position.y + meshSize /2,
+    mesh.position.z
+)
+const bottomLeft = new THREE.Vector3(
+    mesh.position.x - meshSize / 2,
+    mesh.position.y - meshSize /2,
+    mesh.position.z
+)
+const topRight = new THREE.Vector3(
+    mesh.position.x + meshSize / 2,
+    mesh.position.y + meshSize /2,
+    mesh.position.z
+)
+const bottomRight = new THREE.Vector3(
+    mesh.position.x + meshSize / 2,
+    mesh.position.y - meshSize /2,
+    mesh.position.z
+)
 
+topLeft.project(camera)
+bottomLeft.project(camera)
+topRight.project(camera)
+bottomRight.project(camera)
+
+const topLeftX = (1 + topLeft.x) / 2 * sizes.width
+const topLeftY = (1 - topLeft.y) / 2 * sizes.height
+const topRightX = (1 + topRight.x) / 2 * sizes.width
+const bottomRightY = (1 - bottomRight.y) / 2 * sizes.height
+
+const meshLeftPixel = topLeftX
+const meshRightPixel = topRightX
+const meshTopPixel = topLeftY
+const meshBottomPixel = bottomRightY
+
+const remap = (value, low1, high1, low2, high2 ) => {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1)
+}
 
 /**
  * SetMouse
  */
 addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / sizes.width);
-    mouseY = (e.clientY / sizes.height) + 1;
+    if(e.clientX >= meshLeftPixel && e.clientX <= meshRightPixel){
+        mouseX = remap(e.clientX, meshLeftPixel, meshRightPixel, 0, 1)
+    }
+    if(e.clientY >= meshTopPixel && e.clientY <= meshBottomPixel){
+        mouseY = remap(e.clientY, meshTopPixel, meshBottomPixel, 1, 0)
+    }
 })
-
-
 
 /**
  * Animate
