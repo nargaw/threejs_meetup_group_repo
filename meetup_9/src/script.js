@@ -18,8 +18,8 @@ const scene = new THREE.Scene()
 
 // Loaders
 const loader = new THREE.TextureLoader()
-const image = loader.load('./Image/night.jpg')
-console.log(image)
+const image = loader.load('./night.jpg')
+// console.log(image)
 
 /**
  * Sizes
