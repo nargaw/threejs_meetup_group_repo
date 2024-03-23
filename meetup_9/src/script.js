@@ -177,7 +177,7 @@ const tick = () =>
     material.uniforms.uMouse.value = new THREE.Vector2(mouseX, mouseY)
 
     // Update controls
-    controls.update()
+    // controls.update()
 
     // Render
     renderer.render(scene, camera)
