@@ -18,7 +18,7 @@ const scene = new THREE.Scene()
 
 // Loaders
 const loader = new THREE.TextureLoader()
-const image = loader.load('./night.jpg')
+const image = loader.load('./forest.jpg')
 // console.log(image)
 
 /**
@@ -82,6 +82,7 @@ let mouseY
  */
 const meshSize = 2
 const geometry = new THREE.PlaneGeometry(meshSize, meshSize, 128, 128)
+// const geometry = new THREE.BoxGeometry(meshSize, meshSize, meshSize, 128, 128)
 
 
 /**
@@ -101,7 +102,10 @@ const material = new THREE.ShaderMaterial({
     },
     side: THREE.DoubleSide,
     transparent: true,
+    // opacity: 0.5
 })
+
+
 
 /**
  * Mesh
@@ -172,6 +176,7 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+    // console.log(elapsedTime)
 
     material.uniforms.uTime.value = elapsedTime
     material.uniforms.uMouse.value = new THREE.Vector2(mouseX, mouseY)

@@ -107,6 +107,9 @@ vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
         return sum;
     }
 
+
+
+
 void main()
 {
     vec3 color = vec3(0.);
@@ -119,7 +122,7 @@ void main()
     vec2 mousePos = uMouse.xy;
 
     //offset
-    vec2 offset = vec2(mousePos) - 0.5;
+    vec2 offset = vec2(mousePos) - 0.35;
 
     //display picture
     color = texture2D(uTexture, vUv).rgb;
@@ -128,16 +131,17 @@ void main()
     vec3 circleColor = texture2D(uTexture, uv2 + f * 0.01).rgb;
 
     //matrixeffect
-    circleColor = pow(circleColor, vec3(1.5, 0.8, 1.5));
+    circleColor = pow(circleColor, vec3(1.0, 2., 1.2));
 
     //circle Shape
-    float circle = distance(uv2 - offset, vec2(0.5));
+    float circle = distance(uv2 - offset, vec2(0.35));
 
     //smooth border
-    circle = 1. - smoothstep(0.1, 0.3, circle);
+    circle = 1. - smoothstep(0.1, 0.31, circle);
 
     //final color
     color = mix(color * 0.2, circleColor * 2., circle );
 
+    // gl_FragColor = vec4(vUv.x, vUv.y, 0., 1.);
     gl_FragColor = vec4(color, 1.);
 }
