@@ -3,8 +3,8 @@ import { useGLTF } from "@react-three/drei"
 export default function Sushi()
 {
 
-    const sushi = useGLTF('./sushi.glb')
-    console.log(sushi)
+    const sushi = useGLTF('./Models/sushi/sushi.glb')
+    
     return <>
         <primitive object={sushi.scene}/>
     </>

@@ -4,12 +4,18 @@ import Scrolly from './Scrolly'
 import Burger from './Burger'
 import Sushi from './Sushi'
 import IceCream from './IceCream'
+import useScrolly from './stores/useScrolly'
+import TextDisplay from './TextDisplay'
 
 export default function Experience()
 {
+
+    //get global state
+    const pagePositionValue = useScrolly(state => state.pageValue)
+    
     return(
         <>  
-            <Canvas camera={{position: [0, 0, 3]}}>
+            <Canvas camera={{position: [0, 0, 40]}}>
                 <ScrollControls pages={4}>
                 {/* <OrbitControls 
                     autoRotate
@@ -20,18 +26,21 @@ export default function Experience()
                     <PresentationControls 
                         global 
                         rotation={ [ 0., 0.0, 0 ] }
-                        polar={ [ 0, 0 ] }
+                        polar={ [ -Math.PI * 0.15,  Math.PI * 0.15 ] }
                         azimuth={ [ -Math.PI * 0.5,  Math.PI * 0.5 ] }
                         // azimuth={ [ 0,  0 ] }
                         config={ { mass: 2, tension: 50 } }
                         snap={ { mass: 2, tension: 50 } }
                     >
-                        <Burger />
-                        <Sushi />
-                        <IceCream />
+                        {pagePositionValue === 1 && <Burger />}
+                        {pagePositionValue === 2 && <Sushi />}
+                        {pagePositionValue === 3 &&<IceCream />}
+                        
                     </PresentationControls>
                 </Stage>
+                <TextDisplay />
                 </ScrollControls>
+                
             </Canvas> 
         </>
     )

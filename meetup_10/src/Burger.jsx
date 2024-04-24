@@ -2,7 +2,7 @@ import { useGLTF } from "@react-three/drei"
 
 export default function Burger()
 {
-    const {nodes, materials} = useGLTF('./hamburger.glb')
+    const {nodes, materials} = useGLTF('./Models/burger/hamburger.glb')
     // console.log(nodes, materials)
     return <>
         <mesh 

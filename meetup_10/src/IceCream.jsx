@@ -5,25 +5,27 @@ import { useGLTF, useTexture } from "@react-three/drei"
 export default function IceCream()
 {
 
-    const {nodes} = useGLTF('./icecream.glb')
-    const bottomDiffuse = useTexture('./Casquinha_diffuse.jpeg')
+    const {nodes} = useGLTF('./Models/icecream/icecream.glb')
+    const bottomDiffuse = useTexture('./Models/icecream/Casquinha_diffuse.jpeg')
     bottomDiffuse.flipY = false
-    const bottomNormal = useTexture('./Casquinha_normal.png')
+    const bottomNormal = useTexture('./Models/icecream/Casquinha_normal.png')
     bottomNormal.flipY = false
-    const topDiffuse = useTexture('./Sorvete_diffuse.jpeg')
+    const topDiffuse = useTexture('./Models/icecream/Sorvete_diffuse.jpeg')
     topDiffuse.flipY = false
-    const topNormal = useTexture('./Sorvete_normal.jpeg')
+    const topNormal = useTexture('./Models/icecream/Sorvete_normal.jpeg')
     topNormal.flipY = false
 
     return <>
         <mesh
-            scale={[0.1, 0.1, 0.1]}
+            // position={[0, 0, -20]}
+            scale={[0.01, 0.01, 0.01]}
             geometry={nodes.SORVETE_Casquinha_0.geometry}
         >
             <meshStandardMaterial normalMap={bottomNormal} map={bottomDiffuse} />
         </mesh>
         <mesh
-            scale={[0.1, 0.1, 0.1]}
+            // position={[0, 0, -20]}
+            scale={[0.01, 0.01, 0.01]}
             geometry={nodes.SORVETE_Sorvete_0.geometry}
         >
             <meshStandardMaterial normalMap={topNormal} map={topDiffuse} />
