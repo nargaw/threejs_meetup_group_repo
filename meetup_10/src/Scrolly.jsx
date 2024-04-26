@@ -9,10 +9,9 @@ export default function Scrolly()
     const pagePositionValue = useScrolly(state => state.pageValue)
     const setPageValue = useScrolly(state => state.setPageValue)
 
-
-    // console.log('scroll')
+    
     const scroll = useScroll()
-    // console.log(scroll)
+    
     const cameraPos1 = new THREE.Vector3(0,0,20)
     const cameraPos2 = new THREE.Vector3(0, 10, 10.0)
     const cameraPos3 = new THREE.Vector3(0, 0.0, 2.0)
@@ -49,12 +48,12 @@ export default function Scrolly()
             setPageValue(2)
         }
 
-        if(r3 > 0.25 && r4 == 0){
+        if(r3 > 0.25 && r4 < 0.25){
             state.camera.position.lerp(cameraPos3, 0.01)
             state.camera.lookAt(objectLocation3)
             setPageValue(3)
         }
-        if(r4 > 0){
+        if(r4 > 0.2){
             state.camera.position.lerp(cameraPos4, 0.01)
             state.camera.lookAt(objectLocation4)
             setPageValue(4)
