@@ -8,14 +8,17 @@ import { lerp } from "three/src/math/MathUtils.js"
 export default function TextDisplay()
 {
 
+    //get global state value
     const pagePositionValue = useScrolly(state => state.pageValue)
 
+    //useRef for each text
     const text1 = useRef()
     const text2 = useRef()
     const text3 = useRef()
     const text4 = useRef()
     const text5 = useRef()
 
+    //update opacity - lerp value based on global state
     useFrame((state, delta) => {
         if(pagePositionValue !== 0){
             text1.current.material.opacity = lerp(text1.current.material.opacity, 0., 2.5 * delta)
@@ -83,7 +86,7 @@ export default function TextDisplay()
             ref = {text3}
             font='./Font/Inter-Light.woff'
             fontSize={1.95}
-            color={'black'}
+            color={'white'}
             anchorX={10.0}
             anchorY={1.5}
             maxWidth={10}
@@ -100,7 +103,7 @@ export default function TextDisplay()
             ref = {text4}
             font='./Font/Inter-Light.woff'
             fontSize={0.25}
-            anchorX={2.0}
+            anchorX={1.85}
             anchorY={0.}
             maxWidth={2}
             minWidth={5}

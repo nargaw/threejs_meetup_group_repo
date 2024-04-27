@@ -1,11 +1,18 @@
-import { useGLTF } from "@react-three/drei"
+import { useGLTF, useTexture } from "@react-three/drei"
 
 export default function Sushi()
 {
+    //load model
+    const {nodes} = useGLTF('./Models/sushi/sushiModel.glb')
 
-    const sushi = useGLTF('./Models/sushi/sushi.glb')
-    
+    //load baked texture
+    const sushiTexture = useTexture('./Models/sushi/bakedsushi.jpg')
+    sushiTexture.flipY = false
+
     return <>
-        <primitive object={sushi.scene}/>
+        {/* apply texture inside material and give geometry to the mesh*/}
+        <mesh geometry={nodes.sushi.geometry}>
+            <meshStandardMaterial map={sushiTexture}/>
+        </mesh>
     </>
 }

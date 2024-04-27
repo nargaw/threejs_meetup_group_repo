@@ -9,7 +9,7 @@ export default function Scrolly()
     const pagePositionValue = useScrolly(state => state.pageValue)
     const setPageValue = useScrolly(state => state.setPageValue)
 
-    
+
     const scroll = useScroll()
     
     const cameraPos1 = new THREE.Vector3(0,0,20)
@@ -25,39 +25,37 @@ export default function Scrolly()
     const originalPosition = new THREE.Vector3(0, 10, 70)
 
     useFrame((state, delta) => {
-        const r1 = scroll.range(0/4, 1/4)
-        const r2 = scroll.range(1/4, 2/4)
-        const r3 = scroll.range(2/4, 3/4)
-        const r4 = scroll.range(3/4, 4/4)
+
+        const r1 = scroll.range(0/5, 5/5)
         
-        if(r1 <= 0.25){
+        if(r1 <= 0.2){
             state.camera.position.lerp(originalPosition, 0.01)
-            // state.camera.lookAt(objectLocation1)
+            state.camera.lookAt(objectLocation1)
             setPageValue(0)
         }
 
-        if(r1 > 0.25 && r2 == 0){
+        if(r1 > 0.2 && r1 <= 0.4){
             state.camera.position.lerp(cameraPos1, 0.01)
             state.camera.lookAt(objectLocation1)
             setPageValue(1)
         }
-        
-        if(r2 > 0.25 && r3 == 0 && r1 == 1){
+
+        if(r1 > 0.4 && r1 <= 0.6){
             state.camera.position.lerp(cameraPos2, 0.01)
             state.camera.lookAt(objectLocation2)
             setPageValue(2)
         }
 
-        if(r3 > 0.25 && r4 < 0.25){
+        if(r1 > 0.6 && r1 <= 0.8){
             state.camera.position.lerp(cameraPos3, 0.01)
             state.camera.lookAt(objectLocation3)
             setPageValue(3)
         }
-        if(r4 > 0.2){
+
+        if(r1 > 0.8){
             state.camera.position.lerp(cameraPos4, 0.01)
             state.camera.lookAt(objectLocation4)
             setPageValue(4)
-        }
-        
+        } 
     })
 }

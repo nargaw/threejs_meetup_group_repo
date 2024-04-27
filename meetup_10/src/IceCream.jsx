@@ -4,8 +4,10 @@ import { useGLTF, useTexture } from "@react-three/drei"
 
 export default function IceCream()
 {
-
+    //load model
     const {nodes} = useGLTF('./Models/icecream/icecream.glb')
+
+    //load textures
     const bottomDiffuse = useTexture('./Models/icecream/Casquinha_diffuse.jpeg')
     bottomDiffuse.flipY = false
     const bottomNormal = useTexture('./Models/icecream/Casquinha_normal.png')
@@ -17,14 +19,12 @@ export default function IceCream()
 
     return <>
         <mesh
-            // position={[0, 0, -20]}
             scale={[0.01, 0.01, 0.01]}
             geometry={nodes.SORVETE_Casquinha_0.geometry}
         >
             <meshStandardMaterial normalMap={bottomNormal} map={bottomDiffuse} />
         </mesh>
         <mesh
-            // position={[0, 0, -20]}
             scale={[0.01, 0.01, 0.01]}
             geometry={nodes.SORVETE_Sorvete_0.geometry}
         >
