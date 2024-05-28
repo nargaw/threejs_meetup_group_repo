@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "MadimiOne";
+  src: url('../public/Font/MadimiOne-Regular.ttf');
+}
+
 body {
   overflow: hidden;
   margin: 0;
