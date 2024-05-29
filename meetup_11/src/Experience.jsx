@@ -8,9 +8,9 @@ export default function Experience()
     const madeWithLoveStyle = {
         fontFamily: 'MadimiOne, sans-serif',
         position: 'absolute',
-        left: '100%',
+        left: '50%',
         top: '80%',
-        width: '100%',
+        width: '200px',
         transform: 'translate(-50%, -50%)',
         zIndex: '2',
         color: '#f4a261',
