@@ -7,6 +7,8 @@ import { lerp } from 'three/src/math/MathUtils.js'
 
 export default function Shader()
 {
+    //shader material
+    //uniforms are passed into the fragment shader
     const overlayMaterial = new THREE.ShaderMaterial({
         uniforms: 
         {
@@ -21,25 +23,37 @@ export default function Shader()
         vertexShader: vertex,
         fragmentShader: fragment
     })
+
+    //device pixel ratio
     const DPR = Math.min(window.devicePixelRatio, 1.);
+
+    //geometry that fills the entire viewport
     const overlayGeometry = new THREE.PlaneGeometry(2 * DPR, 2 * DPR, 1, 1)
+
+    //reference to the mesh
     const meshRef = useRef()
     
+    //mouse value 1
     let mouseX = 0;
     let mouseY = 0;
 
+    //mouse value 2
     let mouseX2 = 0;
     let mouseY2 = 0;
 
+    //mouse value 3
     let mouseX3 = 0;
     let mouseY3 = 0;
 
+    //mouse value 4
     let mouseX4 = 0;
     let mouseY4 = 0;
 
+    //mouse value 5
     let mouseX5 = 0;
     let mouseY5 = 0;
 
+    //one temp mouse value
     let tempValX = 0;
     let tempValY = 0;
 
@@ -54,6 +68,9 @@ export default function Shader()
             window.innerWidth * DPR,
             window.innerHeight * DPR
         )
+
+        //each mouse value has different interpolation value 0.1 - 0.3
+        //each value is interpolated from the initial to the new temp value using the interpolation value
         mouseX = lerp(mouseX, tempValX, 0.1)
         mouseY = lerp(mouseY, tempValY, 0.1)
 
@@ -70,7 +87,10 @@ export default function Shader()
         mouseY5 = lerp(mouseY5, tempValY, 0.3)
     })
 
+    //one mousemove event listener that goes into the temp x and y values
     window.addEventListener('mousemove', (e) => {
+        //mouse x and y values from 0 to 1 
+        //temp values change only when the mouse moves
         tempValX = (e.clientX / window.innerWidth) ;
         tempValY = -(e.clientY / window.innerHeight) + 1 ;
     })
