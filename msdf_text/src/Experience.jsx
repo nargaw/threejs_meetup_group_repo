@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Center } from '@react-three/drei'
 import DynamicText from './DynamicText'
 
 export default function Experience()
@@ -8,7 +8,9 @@ export default function Experience()
         <> 
             <Canvas camera={{position: [0, 0, 3]}}>
                 {/* <OrbitControls />  */}
-                <DynamicText />
+                <Center>
+                    <DynamicText />
+                </Center>
             </Canvas>
         </>
     )

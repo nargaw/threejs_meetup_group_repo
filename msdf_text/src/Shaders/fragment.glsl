@@ -96,19 +96,19 @@ void main()
     // Output: Strokes
     vec4 strokedFragColor = vec4(uStrokeColor, uOpacity * border);
 
-    float x = floor(vLayoutUv.x * 10. * 3.88);
-    float y = floor(vLayoutUv.y * 10.);
+    float x = floor(vLayoutUv.x * 100. * 3.88 );
+    float y = floor(vLayoutUv.y * 100.);
     float pattern = noise(vec2(x, y));
 
     vec3 blue = vec3(0.034, 0.966, 0.988);
-    vec4 l1 = vec4(vec3(0.912, .0987, 0.234), border);
+    vec4 l1 = vec4(vec3(0.912, .0987, 0.234), uOpacity * alpha);
     vec4 l2 = vec4(vec3(.902, 0.278, 0.369), border);
     vec4 l3 = vec4(vec3(0.924, 0.43, 0.01), outset);
     vec4 l4 = vec4(vec3(0.7204, .604, .929), outset);
 
     float width = 1.0;
 
-    float p0 = abs(sin(u_time) + 0.25 / 2.);
+    float p0 = abs(sin(u_time * 0.25) + 0.25 / 2.);
     p0 = map(p0, 0., 1., -width, 1.);
     p0 = smoothstep(p0, p0 + width, vLayoutUv.x);
     float mix0 = 2. * p0 - pattern; 

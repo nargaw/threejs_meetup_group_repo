@@ -68,7 +68,7 @@ void main() {
     
     vec3 localSpacePosition = position;
 
-    float wave = sin(localSpacePosition.x * 4.5 + u_time);
+    float wave = sin(localSpacePosition.x * 4.5 + u_time * 3.);
 
     localSpacePosition.y += wave;
 
