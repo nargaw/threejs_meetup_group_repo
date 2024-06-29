@@ -101,7 +101,7 @@ void main()
     float y = floor(vLayoutUv.y * 100.);
     float pattern = noise(vec2(x, y));
 
-    vec4 l1 = vec4(vec3(0.912, .0987, 0.234), uOpacity * alpha);
+    vec4 l1 = vec4(vec3(0.512, .5987, 0.934), uOpacity * border);
 
     float width = 1.0;
 

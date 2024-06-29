@@ -7,7 +7,7 @@ export default function Experience()
     return(
         <> 
             <Canvas camera={{position: [0, 0, 3]}}>
-                {/* <OrbitControls />  */}
+                <OrbitControls /> 
                 <Center>
                     <DynamicText />
                 </Center>

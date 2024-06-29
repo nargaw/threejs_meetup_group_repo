@@ -49,7 +49,7 @@ export default function DynamicText()
     const fontJson = fontLoader.load(fnt, (font) => {
         const f = font
         const fontGeometry = new MSDFTextGeometry({
-            text: "dynamic",
+            text: "three",
             font: f.data
         })
         
@@ -57,7 +57,7 @@ export default function DynamicText()
         if(meshRef.current){
             meshRef.current.geometry = fontGeometry
             meshRef.current.scale.set(0.025, -0.025, 0.025)
-            meshRef.current.position.x = -1.25
+            meshRef.current.position.x = -1.125
         }
         // console.log(fontGeometry.computeBoundingBox())
     })
@@ -66,6 +66,7 @@ export default function DynamicText()
 
     useFrame(({clock, camera}) => {
         material.uniforms.u_time.value = clock.elapsedTime - currentTime
+        // console.log(material.uniforms.u_time.value)
     })
 
     return <>
@@ -73,5 +74,6 @@ export default function DynamicText()
             ref={meshRef}
             material={material}
         />
+        
     </>
 }
