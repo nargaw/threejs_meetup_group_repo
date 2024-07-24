@@ -162,8 +162,6 @@ float cnoise(vec3 P){
     return 2.2 * n_xyz;
 }
 
-
-
 float displace(vec3 point) {
     return cnoise(point * u_frequency + vec3(u_time * u_speed)) * u_amplitude;
   }
@@ -180,8 +178,6 @@ void main()
     vec4 projectedPosition = projectionMatrix * viewPosition;
 
     gl_Position = projectedPosition;
-
-    
 
     float offset = 4.0/256.0;
     vec3 tangent = orthogonal(normal);

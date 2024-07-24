@@ -17,9 +17,9 @@ export default function Blob()
             u_time: { type: "f", value: 1.0 },
             u_resolution: { type: "v2", value: new THREE.Vector2(window.innerWidth, window.inner) },
             u_mouse: { type: "v2", value: new THREE.Vector2() },
-            u_frequency: {value: 0.75 },
-            u_amplitude: {value: 0.25},
-            u_speed: { value: 1.0}
+            u_frequency: {value: 0.85 },
+            u_amplitude: {value: 0.75},
+            u_speed: { value: .2}
         }
     })
 
@@ -38,9 +38,9 @@ export default function Blob()
     })
 
     return <>
-        {/* <OrbitControls />  */}
+        {/* <OrbitControls autoRotate/>  */}
         <mesh ref={meshRef} material={material}>
-            <icosahedronGeometry args={[1, 128]}/>
+            <icosahedronGeometry args={[1.25, 128]}/>
         </mesh>
     </>
 }
