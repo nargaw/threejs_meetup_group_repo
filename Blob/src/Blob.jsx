@@ -69,7 +69,7 @@ export default function Blob()
     return <>
         {/* Here is our mesh - it takes the shader material and reference  */}
         {/* It also needs a geometry the arguments are the size and how divide the mesh is - no of vertices */}
-        <OrbitControls />
+        {/* <OrbitControls /> */}
         <mesh ref={meshRef} material={material}>
             <icosahedronGeometry args={[1.25, 128]}/>
         </mesh>
