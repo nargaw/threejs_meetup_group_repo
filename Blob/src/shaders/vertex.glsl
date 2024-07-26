@@ -1,95 +1,17 @@
-varying vec2 vUv;
+//varying values that vary for each vertex
 varying vec3 vNormal;
 varying vec3 vPosition;
-varying vec4 vColor;
 
+//uniform values that are consistent for each vertex
 uniform float u_frequency;
 uniform float u_amplitude;
 uniform float u_speed;
-
-//inverseLerp 
-float inverseLerp(float v, float minVal, float maxVal){
-    return (v - minVal) / (maxVal - minVal);
-}
-
-//remap
-float remap(float v, float minIn, float maxIn, float minOut, float maxOut){
-    float t = inverseLerp(v, minIn, maxIn);
-    return mix(minOut, maxOut, t);
-}
-
-//rotate
-mat3 rotateY(float radians)
-{
-    float s = sin(radians);
-    float c = cos(radians);
-
-    return mat3(
-        c, 0.0, s,
-        0.0, 1., 0.,
-        -s, 0., c
-    );
-}
-
-mat3 rotateZ(float radians)
-{
-    float s = sin(radians);
-    float c = cos(radians);
-
-    return mat3(
-        c, -s, 0.,
-        s, c, 0.,
-        0., 0., 1.
-    );
-}
-
-mat3 rotateX(float radians)
-{
-    float s = sin(radians);
-    float c = cos(radians);
-
-    return mat3(
-        1., 0.0, 0.,
-        0.0, c, -s,
-        0., s, c
-    );
-}
-
 uniform float u_time;
 
-
-//easing functions
-float easeOutBounce(float x){
-    const float nl = 7.5625;
-    const float dl = 2.75;
-
-    if (x < 1. / dl){
-        return nl * x * x;
-    } else if (x < 2.0 / dl){
-        x -= 1.5/ dl;
-        return nl * x * x + 0.75;
-    } else if (x < 2.5 / dl){
-        x -= 2.25 / dl;
-        return nl * x * x + 0.9375;
-    } else {
-        x -= 2.625 / dl;
-        return nl * x * x + 0.984375;
-    }
-}
-
-float easeInBounce(float x){
-    return 1. - easeOutBounce(1. - x);
-}
-
-float easeInOutBounce(float x){
-    return x < 0.5
-    ? (1. - easeOutBounce(1. - 2. * x)) / 2.
-    : (1. + easeOutBounce(2. * x - 1.)) / 2.;
-}
-
+//  This is how we can generate some randomness (pseudo)
 //	Classic Perlin 3D Noise 
 //	by Stefan Gustavson
-//
+
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
 vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
@@ -162,23 +84,32 @@ float cnoise(vec3 P){
     return 2.2 * n_xyz;
 }
 
+//function that deforms the model based on the frequency, speed and amplitude inputs
 float displace(vec3 point) {
     return cnoise(point * u_frequency + vec3(u_time * u_speed)) * u_amplitude;
-  }
+}
 
+//function that help in recalculation of the vertex for proper shading
 vec3 orthogonal(vec3 v){
     return normalize(abs(v.x) > abs(v.z) ? vec3(-v.y, v.x, 0.0) : vec3(0.0, -v.z, v.y));
 }
 
 void main()
 {
+    //the displaced position is calculated relative to the original position
     vec3 displacedPosition = position + normal * displace(position);
+
+    //the model position is given the new displaced position
     vec4 modelPosition = modelMatrix * vec4(displacedPosition, 1.0);
+
+    //the new projected position is calucated for the vertices based on the displacement
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
 
+    //this value is passed to the fragment shader
     gl_Position = projectedPosition;
 
+    //here the vPosition and the vNormal are calucated and sent to the fragment shader using helper function to calculate proper shading
     float offset = 4.0/256.0;
     vec3 tangent = orthogonal(normal);
     vec3 bitangent = normalize(cross(normal, tangent));

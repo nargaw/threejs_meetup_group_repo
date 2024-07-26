@@ -12,7 +12,7 @@ export default function Blob()
     const meshRef = useRef()
 
     //useControls from leva creates a UI to control the shader values frequency, amplitude and speed and sent to the shader material
-    const {frequency, amplitude, speed } = useControls({
+    const {frequency, amplitude, speed, color } = useControls({
         frequency: {
             value: 0.75,
             min: 0.25,
@@ -30,7 +30,8 @@ export default function Blob()
             min: 0.25,
             max: 1.0,
             step: 0.01
-        }
+        },
+        color: '#6b92a7',
     })
 
     //This is the shader material
@@ -46,7 +47,8 @@ export default function Blob()
             u_resolution: { value: new THREE.Vector2(window.innerWidth, window.inner) },
             u_frequency: {value: frequency },
             u_amplitude: {value: amplitude},
-            u_speed: { value: speed}
+            u_speed: { value: speed},
+            u_color: {value: new THREE.Color(color)}
         }
     })
 
@@ -61,6 +63,7 @@ export default function Blob()
         material.uniforms.u_cameraPosition.value = camera.position
         material.uniforms.u_time.value = clock.elapsedTime - currentTime
         material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.inner)
+        material.uniforms.u_color.value = new THREE.Color(color)
     })
 
     return <>

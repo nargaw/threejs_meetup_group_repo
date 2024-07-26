@@ -12,7 +12,6 @@
   "dependencies": {
     "@react-three/drei": "^9.92.3",
     "@react-three/fiber": "^8.15.12",
-    "leva": "^0.9.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.159.0",
@@ -26,6 +25,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
+    "leva": "^0.9.34",
     "vite": "^4.4.0"
   }
 }
