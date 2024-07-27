@@ -62,7 +62,7 @@ export default function Blob()
     useFrame(({clock, camera}) => {
         material.uniforms.u_cameraPosition.value = camera.position
         material.uniforms.u_time.value = clock.elapsedTime - currentTime
-        material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.inner)
+        material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight)
         material.uniforms.u_color.value = new THREE.Color(color)
     })
 
