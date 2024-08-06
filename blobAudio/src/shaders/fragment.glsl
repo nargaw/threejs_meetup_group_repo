@@ -72,7 +72,7 @@ void main()
 
     color = pow(color, vec3(1./2.2));
 
-    color = normal * 0.5 + 0.5 + fresnel;
+    //color = normal * 0.5 + 0.5 + fresnel;
 
     gl_FragColor = vec4(color, 1.0);
 }

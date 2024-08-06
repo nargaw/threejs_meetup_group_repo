@@ -1,18 +1,17 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 import { useControls } from 'leva'
 import useSong from './stores/songState'
+import { Html } from '@react-three/drei'
 
 export default function Blob()
 {
-
     //global state to check if song is playing
     const songStatus = useSong(state => state.songPlaying)
-    // console.log(songStatus)
 
     //Ref for the mesh 
     const meshRef = useRef()
@@ -52,29 +51,34 @@ export default function Blob()
     //format/audio listner
     const fftSize = 128
     const format = ( renderer.capabilities.isWebGL2 ) ? THREE.RedFormat : THREE.LuminanceFormat
+
     const listener = new THREE.AudioListener()
     if(camera) {
+        if(camera.children.length < 1)
         camera.add(listener)
+        // console.log(camera)
     }
     
+    const analyser = useRef()
+    const soundTexture = useRef()
+    console.log(soundTexture.current)
+
     const sound = new THREE.Audio(listener)
     const audioLoader = new THREE.AudioLoader()
     audioLoader.load('./Audio/new-adventure-matrika.ogg', (buffer) => {
         sound.setBuffer(buffer)
         sound.setLoop(false)
         sound.setVolume(0.5)
-        sound.hasPlaybackControl = true     
-    })
-    
-    if(songStatus === true){
-        console.log(sound.isPlaying)
-        sound.play()
-    } 
-    if(songStatus === false) {
-        console.log(sound.isPlaying)
-        sound.stop()
-    }
+        sound.hasPlaybackControl = true
+        songStatus == true ? sound.play() : sound.pause()
 
+        analyser.current = new THREE.AudioAnalyser(sound, fftSize)
+        soundTexture.current = new THREE.DataTexture(analyser.current.data, 64, 1, format)
+    })
+
+
+    
+    
     //This is the shader material
     //It has uniforms, a fragment shader and a vertex shader
     //The uniform values are sent to the fragment and vertex shaders
@@ -89,7 +93,8 @@ export default function Blob()
             u_frequency: {value: frequency },
             u_amplitude: {value: amplitude},
             u_speed: { value: speed},
-            u_color: {value: new THREE.Color(color)}
+            u_color: {value: new THREE.Color(color)},
+            u_audio: { value: soundTexture.current }
         }
     })
 
@@ -105,6 +110,9 @@ export default function Blob()
         material.uniforms.u_time.value = clock.elapsedTime - currentTime
         material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight)
         material.uniforms.u_color.value = new THREE.Color(color)
+        if(analyser.current) analyser.current.getFrequencyData()
+        if(meshRef.current.material.uniforms.u_audio.value) meshRef.current.material.uniforms.u_audio.value.needsUpdate = true
+        listener.needsUpdate = true
     })
 
     return <>

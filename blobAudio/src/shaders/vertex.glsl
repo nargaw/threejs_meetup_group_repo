@@ -7,6 +7,7 @@ uniform float u_frequency;
 uniform float u_amplitude;
 uniform float u_speed;
 uniform float u_time;
+uniform sampler2D u_audio;
 
 //  This is how we can generate some randomness (pseudo)
 //	Classic Perlin 3D Noise 
@@ -86,7 +87,8 @@ float cnoise(vec3 P){
 
 //function that deforms the model based on the frequency, speed and amplitude inputs
 float displace(vec3 point) {
-    return cnoise(point * u_frequency + vec3(u_time * u_speed)) * u_amplitude;
+    float audioVal = texture2D(u_audio, vec2(point.x, point.z)).r;
+    return cnoise(point * u_frequency + vec3(u_time * audioVal)) * u_amplitude * audioVal ;
 }
 
 //function that help in recalculation of the vertex for proper shading
