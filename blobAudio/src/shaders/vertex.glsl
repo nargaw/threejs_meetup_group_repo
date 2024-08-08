@@ -86,9 +86,16 @@ float cnoise(vec3 P){
 }
 
 //function that deforms the model based on the frequency, speed and amplitude inputs
+float displaceMod(vec3 point, float audioVal) {
+    
+
+    return cnoise(point * (u_frequency) + vec3(u_time * u_speed) + audioVal) * u_amplitude ;
+}
+
 float displace(vec3 point) {
-    float audioVal = texture2D(u_audio, vec2(point.x, point.z)).r;
-    return cnoise(point * u_frequency + vec3(u_time * audioVal)) * u_amplitude * audioVal ;
+    
+
+    return cnoise(point * (u_frequency) + vec3(u_time * u_speed) ) * u_amplitude ;
 }
 
 //function that help in recalculation of the vertex for proper shading
@@ -98,6 +105,11 @@ vec3 orthogonal(vec3 v){
 
 void main()
 {
+    float audioVala = texture2D(u_audio, vec2(position.xy)).r;
+    float audioValb = texture2D(u_audio, vec2(position.xz)).r;
+    float audioValc = texture2D(u_audio, vec2(position.yz)).r;
+
+
     //the displaced position is calculated relative to the original position
     vec3 displacedPosition = position + normal * displace(position);
 

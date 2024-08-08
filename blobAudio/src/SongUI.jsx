@@ -27,9 +27,9 @@ export default function SongUI()
 
         const unsubscribeEffect = addEffect(() =>
         {   
-            let elapsedTime = 0
+            
             const startTime = getSongTime()
-
+            let elapsedTime = (songStopTime - startTime)/1000
             if(songStatus == false)
             {
                 // console.log('off')
