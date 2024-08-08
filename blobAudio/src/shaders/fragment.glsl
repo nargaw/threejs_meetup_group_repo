@@ -2,6 +2,7 @@
 //uniforms are uniform for all fragments
 uniform vec3 u_cameraPosition;
 uniform vec3 u_color;
+uniform float u_audio;
 
 //varyings vary for all fragments
 varying vec3 vNormal;
@@ -20,6 +21,8 @@ float remap(float v, float minIn, float maxIn, float minOut, float maxOut){
 
 void main()
 {
+    //
+    float newAudioVal = remap(u_audio, 0., 150., 0., 1.);
     //color of the mesh
     // vec3 color = vec3(0.9, 0.1, 0.1);
     vec3 color = u_color;

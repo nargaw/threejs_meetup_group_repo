@@ -7,7 +7,20 @@ uniform float u_frequency;
 uniform float u_amplitude;
 uniform float u_speed;
 uniform float u_time;
-uniform sampler2D u_audio;
+// uniform sampler2D u_audio;
+uniform float u_audio;
+
+
+//inverseLerp 
+float inverseLerp(float v, float minVal, float maxVal){
+    return (v - minVal) / (maxVal - minVal);
+}
+
+//remap function
+float remap(float v, float minIn, float maxIn, float minOut, float maxOut){
+    float t = inverseLerp(v, minIn, maxIn);
+    return mix(minOut, maxOut, t);
+}
 
 //  This is how we can generate some randomness (pseudo)
 //	Classic Perlin 3D Noise 
@@ -86,16 +99,10 @@ float cnoise(vec3 P){
 }
 
 //function that deforms the model based on the frequency, speed and amplitude inputs
-float displaceMod(vec3 point, float audioVal) {
-    
-
-    return cnoise(point * (u_frequency) + vec3(u_time * u_speed) + audioVal) * u_amplitude ;
-}
-
 float displace(vec3 point) {
-    
+    float newAudioVal = remap(u_audio, 0., 150., 0.5, 2.5);
 
-    return cnoise(point * (u_frequency) + vec3(u_time * u_speed) ) * u_amplitude ;
+    return cnoise(point * ((newAudioVal) ) + vec3(u_time * u_speed) ) * u_amplitude ;
 }
 
 //function that help in recalculation of the vertex for proper shading
@@ -105,11 +112,7 @@ vec3 orthogonal(vec3 v){
 
 void main()
 {
-    float audioVala = texture2D(u_audio, vec2(position.xy)).r;
-    float audioValb = texture2D(u_audio, vec2(position.xz)).r;
-    float audioValc = texture2D(u_audio, vec2(position.yz)).r;
-
-
+    
     //the displaced position is calculated relative to the original position
     vec3 displacedPosition = position + normal * displace(position);
 

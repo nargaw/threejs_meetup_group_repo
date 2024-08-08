@@ -58,9 +58,9 @@ export default function SongUI()
     return <>
         <div className="interface">
             {songStatus == false && <div className="start" onClick={startSong}>start</div>}
-            {songStatus == true && <div className="stop" onClick={stopSong}>stop</div>}
-            <div className="song">song: new adventure</div>
-            <div className="artist">artist: matrika </div>
+            {/* {songStatus == true && <div className="stop" onClick={stopSong}>stop</div>} */}
+            <div className="song">song: New Adventure</div>
+            <div className="artist">artist: Matrika </div>
             <div id='Progress_Status'>
                 <div className="progress" ref={progress}></div>
             </div>

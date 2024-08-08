@@ -12,7 +12,6 @@ export default function Blob()
 {
     //global state to check if song is playing
     const songStatus = useSong(state => state.songPlaying)
-    console.log(songStatus)
 
     //Ref for the mesh 
     const meshRef = useRef()
@@ -43,12 +42,28 @@ export default function Blob()
     
 
     const sound = useRef()
+    const analyser = useRef()
     const [listener] = useState(() => new THREE.AudioListener())
-    console.log(sound.current)
+
     const { gl, camera } = useThree()
     //format/audio listner
-    const fftSize = 128
-    const format = ( gl.capabilities.isWebGL2 ) ? THREE.RedFormat : THREE.LuminanceFormat
+    const fftSize = 128  
+    const buffer = useLoader(THREE.AudioLoader, './Audio/new-adventure-matrika.ogg')
+    useEffect(() => {
+        //set sound params
+        sound.current.setBuffer(buffer)
+        sound.current.setLoop(false)
+        sound.current.setVolume(0.5)
+
+        //play sound if clicked
+        if(songStatus)sound.current.play()    
+        camera.add(listener)
+        
+        analyser.current = new THREE.AudioAnalyser(sound.current, fftSize)
+    
+        //remove listener when finished
+        return () => {camera.remove(listener)}
+    }, [songStatus])
 
     
     
@@ -67,7 +82,7 @@ export default function Blob()
             u_amplitude: {value: amplitude},
             u_speed: { value: speed},
             u_color: {value: new THREE.Color(color)},
-            // u_audio: { value: soundTexture.current }
+            u_audio: { value: analyser.current}
         }
     })
 
@@ -79,13 +94,13 @@ export default function Blob()
 
     //here the uniform values are update on each frame
     useFrame(({clock, camera}) => {
+        if(analyser){ 
+            analyser.current.getFrequencyData()
+            material.uniforms.u_audio.value = analyser.current.getAverageFrequency()
+        }
         material.uniforms.u_cameraPosition.value = camera.position
         material.uniforms.u_time.value = clock.elapsedTime - currentTime
-        material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight)
-        material.uniforms.u_color.value = new THREE.Color(color)
-        // if(analyser.current) analyser.current.getFrequencyData()
-        // if(meshRef.current.material.uniforms.u_audio.value) meshRef.current.material.uniforms.u_audio.value.needsUpdate = true
-        // listener.needsUpdate = true
+        material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight)        
     })
 
     return <>
