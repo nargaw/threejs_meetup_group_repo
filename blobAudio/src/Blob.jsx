@@ -20,13 +20,13 @@ export default function Blob()
     const {frequency, amplitude, speed, color } = useControls({
         frequency: {
             value: 0.75,
-            min: 0.25,
+            min: 0.05,
             max: 1.0,
             step: 0.01
         },
         amplitude: {
-            value: 0.75,
-            min: 0.25,
+            value: 0.25,
+            min: 0.05,
             max: 1.0,
             step: 0.01
         },
@@ -36,7 +36,7 @@ export default function Blob()
             max: 1.0,
             step: 0.01
         },
-        color: '#6b92a7',
+        color: '#101517',
     })
 
     
@@ -52,7 +52,7 @@ export default function Blob()
     useEffect(() => {
         //set sound params
         sound.current.setBuffer(buffer)
-        sound.current.setLoop(false)
+        sound.current.setLoop(true)
         sound.current.setVolume(0.5)
 
         //play sound if clicked
@@ -72,6 +72,7 @@ export default function Blob()
     //The uniform values are sent to the fragment and vertex shaders
     const material = new THREE.ShaderMaterial({
         // wireframe: true,
+        // depthWrite: true,
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,
         uniforms: {
