@@ -9,6 +9,7 @@ export default create((set, get) =>
 
         songStopTime: 0,
 
+        //change global status
         startSong: () =>
         {
             set((state) => ({songStartTime: Date.now()}))
@@ -16,10 +17,12 @@ export default create((set, get) =>
             return get().songStartTime
         },
 
+        //get song start time
         getSongTime: () => {
             return get().songStartTime
         },
 
+        //currently unused
         setSongOff: () => 
         {
             set((state) => ({songStopTime: Date.now()}))

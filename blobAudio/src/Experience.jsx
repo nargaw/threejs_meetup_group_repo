@@ -21,6 +21,7 @@ export default function Experience()
                 {/* The blob component contains the whole 3D scene */}
                 <Blob />
             </Canvas>
+            {/* songUI goes outside the canvas - however it is possible to use HTML inside canvas using Drei helper */}
             <SongUI />
         </>
     )

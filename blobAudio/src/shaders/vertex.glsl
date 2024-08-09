@@ -9,6 +9,8 @@ uniform float u_speed;
 uniform float u_time;
 // uniform sampler2D u_audio;
 uniform float u_audio;
+uniform float u_lowerLimit;
+uniform float u_upperLimit;
 
 
 //inverseLerp 
@@ -100,8 +102,8 @@ float cnoise(vec3 P){
 
 //function that deforms the model based on the frequency, speed and amplitude inputs
 float displace(vec3 point) {
-    float newAudioVal = remap(u_audio, 0., 150., 0.5, 2.5);
-
+    //remap the audio value
+    float newAudioVal = remap(u_audio, 0., 150., u_lowerLimit, u_upperLimit);
     return cnoise(point * ((newAudioVal) ) + vec3(u_time * u_speed) ) * u_amplitude ;
 }
 

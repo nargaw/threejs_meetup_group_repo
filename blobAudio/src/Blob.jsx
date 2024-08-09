@@ -17,7 +17,7 @@ export default function Blob()
     const meshRef = useRef()
 
     //useControls from leva creates a UI to control the shader values frequency, amplitude and speed and sent to the shader material
-    const {frequency, amplitude, speed, color } = useControls({
+    const {frequency, amplitude, speed, color, lowerLimit, upperLimit } = useControls({
         frequency: {
             value: 0.75,
             min: 0.05,
@@ -37,18 +37,36 @@ export default function Blob()
             step: 0.01
         },
         color: '#101517',
+        lowerLimit: {
+            value: 0.25,
+            min: 0.01,
+            max: 2.0,
+            step: 0.01
+        },
+        upperLimit: {
+            value: 2.5,
+            min: 2.0,
+            max: 10.0,
+            step: 0.01
+        },
     })
 
     
-
+    //references for the sound and analyser
     const sound = useRef()
     const analyser = useRef()
     const [listener] = useState(() => new THREE.AudioListener())
+    
+    //get camera
+    const {camera} = useThree()
 
-    const { gl, camera } = useThree()
     //format/audio listner
-    const fftSize = 128  
+    const fftSize = 128
+    
+    //load audio
     const buffer = useLoader(THREE.AudioLoader, './Audio/new-adventure-matrika.ogg')
+
+
     useEffect(() => {
         //set sound params
         sound.current.setBuffer(buffer)
@@ -83,7 +101,9 @@ export default function Blob()
             u_amplitude: {value: amplitude},
             u_speed: { value: speed},
             u_color: {value: new THREE.Color(color)},
-            u_audio: { value: analyser.current}
+            u_audio: { value: 0}, //analyser data goes here
+            u_lowerLimit: { value: lowerLimit},
+            u_upperLimit: { value: upperLimit},
         }
     })
 
@@ -96,8 +116,8 @@ export default function Blob()
     //here the uniform values are update on each frame
     useFrame(({clock, camera}) => {
         if(analyser){ 
-            analyser.current.getFrequencyData()
-            material.uniforms.u_audio.value = analyser.current.getAverageFrequency()
+            analyser.current.getFrequencyData() //get current frequency data
+            material.uniforms.u_audio.value = analyser.current.getAverageFrequency() //give the average frequency data to the uniform value
         }
         material.uniforms.u_cameraPosition.value = camera.position
         material.uniforms.u_time.value = clock.elapsedTime - currentTime
@@ -117,7 +137,7 @@ export default function Blob()
             <icosahedronGeometry args={[1.25, 128]}/>
         </mesh>
 
+        //audio object
         <audio ref={sound} args={[listener]}/>
-       
     </>
 }
