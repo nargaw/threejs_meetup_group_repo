@@ -104,6 +104,7 @@ float cnoise(vec3 P){
 float displace(vec3 point) {
     //remap the audio value
     float newAudioVal = remap(u_audio, 0., 150., u_lowerLimit, u_upperLimit);
+    // float newAudioVal = u_audio;
     return cnoise(point * ((newAudioVal) ) + vec3(u_time * u_speed) ) * u_amplitude ;
 }
 

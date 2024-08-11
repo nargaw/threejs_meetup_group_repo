@@ -76,7 +76,7 @@ export default function Blob()
         //play sound if clicked
         if(songStatus)sound.current.play()    
         camera.add(listener)
-        
+
         analyser.current = new THREE.AudioAnalyser(sound.current, fftSize)
     
         //remove listener when finished
@@ -89,7 +89,7 @@ export default function Blob()
     //It has uniforms, a fragment shader and a vertex shader
     //The uniform values are sent to the fragment and vertex shaders
     const material = new THREE.ShaderMaterial({
-        // wireframe: true,
+        wireframe: true,
         // depthWrite: true,
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,
@@ -118,6 +118,7 @@ export default function Blob()
         if(analyser){ 
             analyser.current.getFrequencyData() //get current frequency data
             material.uniforms.u_audio.value = analyser.current.getAverageFrequency() //give the average frequency data to the uniform value
+            // console.log(material.uniforms.u_audio.value)
         }
         material.uniforms.u_cameraPosition.value = camera.position
         material.uniforms.u_time.value = clock.elapsedTime - currentTime
@@ -134,7 +135,7 @@ export default function Blob()
             
         >
             {/* <meshNormalMaterial /> */}
-            <icosahedronGeometry args={[1.25, 128]}/>
+            <icosahedronGeometry args={[1.25, 12]}/>
         </mesh>
 
         //audio object
